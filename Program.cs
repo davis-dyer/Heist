@@ -10,7 +10,12 @@ namespace Heist
             Console.WriteLine("Plan Your Heist!");
 
             Dictionary<string, TeamMember> TheSquad = new();
+
+            Console.WriteLine("Please choose a difficulty level for your mission (1-100)");
+            string difficultyLevel = Console.ReadLine();
+            int bankDifficulty = int.Parse(difficultyLevel);
             
+
             while (true)
             {
                 TeamMember TeamMember = new();
@@ -48,29 +53,43 @@ namespace Heist
                 /* Console.WriteLine($"Your esteemed team leader {TeamMember} has a skill level of {TeamMember.SkillLevel} and a courage factor of {TeamMember.CourageFactor}"); */
 
             }
-            int bankDifficulty = 100;
-            
-            //Creating a random number fo the heist luck value
-            Random r = new Random();
-            int luckValue = r.Next(-10, 11);
-            Console.WriteLine(luckValue);
-            bankDifficulty +=luckValue;
 
-            //
+            Console.WriteLine("How many times would you like to run this simulation? (1-5)");
+            string trialRuns = Console.ReadLine();
+            int trialRunInt = int.Parse(trialRuns);
+
+
             int teamSkillLevel = 0;
+            int failedRuns = 0;
+            int successRuns = 0;
+
             foreach (KeyValuePair<string, TeamMember> member in TheSquad)
             {
                 teamSkillLevel += member.Value.SkillLevel;
             }
 
-            Console.WriteLine($"Your team skill level is {teamSkillLevel}. The bank's difficulty is {bankDifficulty}");
-
-            if (teamSkillLevel >= bankDifficulty)
+            for (int i = 0; i < trialRunInt; i++)
             {
-                Console.WriteLine("Success!");
-            }
-            else{
-                Console.WriteLine("You got caught immediately.");
+                //Creating a random number fo the heist luck value
+                Random r = new Random();
+                int luckValue = r.Next(-10, 11);
+                Console.WriteLine(luckValue);
+                bankDifficulty += luckValue;
+
+                Console.WriteLine($"Your team skill level is {teamSkillLevel}. The bank's difficulty is {bankDifficulty}");
+
+                if (teamSkillLevel >= bankDifficulty)
+                {
+                    Console.WriteLine("Success!");
+                    successRuns += 1;
+                }
+                else
+                {
+                    Console.WriteLine("You got caught immediately.");
+                    failedRuns += 1;
+                }
+
+                bankDifficulty += int.Parse(difficultyLevel);
             }
         }
     }
